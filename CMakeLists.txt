@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
-project(DataStruct_ForStudy)
+project(DataStruct_ForStudy C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(untitled3 Chap_3/sqstack_func.c)
+add_executable(untitled3 Chap_2/single_linked_list_func.c)

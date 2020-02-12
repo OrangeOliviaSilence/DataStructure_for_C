@@ -60,8 +60,8 @@ Status clearStack1(sqStack1 *S){
 }//clearStack1  √
 /*****************1.4、查栈空*******************/
 Status isEmptyStack1(sqStack1 S){
-    if(S.bottom == S.top) {printf("--此栈空！\n"); return TRUE;}
-    else if(S.top > S.bottom) {printf("--此栈非空！\n"); return FALSE;}
+    if(S.bottom == S.top) {/*printf("--此栈空！\n");*/ return TRUE;}
+    else if(S.top > S.bottom) {/*printf("--此栈非空！\n");*/ return FALSE;}
     else {printf("--此栈出错！\n"); return ERROR;}
 }//isEmptyStack1  √
 /*****************1.5、求栈长*******************/
@@ -127,8 +127,8 @@ Status clearStack2(sqStack2 *S){
 }//clearStack2  √
 /*****************2.4、查栈空*******************/
 Status isEmptyStack2(sqStack2 S){
-    if(S.top == -1) {printf("--此栈空！\n"); return TRUE;}
-    else if(S.top > -1) {printf("--此栈非空！\n"); return FALSE;}
+    if(S.top == -1) {/*printf("--此栈空！\n");*/ return TRUE;}
+    else if(S.top > -1) {/*printf("--此栈非空！\n");*/ return FALSE;}
     else {printf("--此栈出错！\n"); return ERROR;}
 }//isEmptyStack2  √
 /*****************2.5、求栈长*******************/
@@ -169,16 +169,22 @@ void traverseStack2(sqStack2 S){
 
 //栈的应用
 /*****************3.1、进制换算*******************/
-void conversion(int e, int system){
+void conversion(){
     sqStack1 S;
+    int e1, e2, system;
     initStack1(&S);
-    while(e){
-        pushStack1(&S, e % system);
-        e /= system;
+    printf("--请输入一个十进制数：");
+    scanf_s("%d", &e1);
+    e2 = e1;
+    printf("--请输入要转换成什么进制：");
+    scanf_s("%d", &system);
+    while(e1){
+        pushStack1(&S, e1%system);
+        e1 /= system;
     }
+    printf("--十进制数%d对应的%d进制数为：", e2, system);
     while(!isEmptyStack1(S)){
-        popStack1(&S, &e);
-        printf("%d", e);
+        popStack1(&S, &e1); printf("%d", e1);
     }
     printf("\n");
 }//conversion
@@ -278,6 +284,7 @@ int main() {
     getTopStack2(S2, &e);
     printf("--当前栈顶数据：%d\n\n", e);
     */
+    conversion();
 
-
+    return 0;
 }
