@@ -232,12 +232,9 @@ Status matching(char *str){         //str是某个字符串的首地址
     if(!isEmptyStack1(S)) return -3;            //表示栈中有多余的左括号没有得到匹配
     return TRUE;
 }//matching     √
-/*****************3.3、有优先级的括号匹配检验*******************/
-
 
 /**********************************************主函数*********************************************************/
 int main() {
-    /*
     //第1种
     printf("//顺序栈的第1种定义方式的测试\n");
     sqStack1 S1;
@@ -331,12 +328,10 @@ int main() {
     printf("--当前栈顶数据：%d\n\n", e);
 
     printf("//3.1、conversion测试\n");
-    conversion();*/
+    conversion();
 
     printf("//3.2、matching测试\n");
     char str[] = "([{";
     printf("%d\n", matching(str));
     return 0;
-
-
 }
