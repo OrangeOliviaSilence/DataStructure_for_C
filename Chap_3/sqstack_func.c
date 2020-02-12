@@ -12,7 +12,7 @@
 #define STACK_INIT_SIZE 100         //存储空间初始分配量
 #define STACKINCREMENT 10           //存储空间增量
 typedef int Status;
-typedef int elemType;
+typedef char elemType;
 
 //顺序栈的第1种定义方式
 typedef struct {
@@ -87,7 +87,7 @@ Status pushStack1(sqStack1* S, elemType e){
     return OK;
 }//pushStack1  √
 /*****************1.8、数据出栈*******************/
-Status popStack1(sqStack1 *S, int *e){          //用e返回栈顶元素
+Status popStack1(sqStack1 *S, elemType *e){          //用e返回栈顶元素
     if(S->top == S->bottom) return ERROR;       //若栈空，不对空栈操作
     *e = *(S->top - 1);
     (S->top)--;
@@ -142,7 +142,7 @@ Status getTopStack2(sqStack2 S, elemType *e){
     return OK;
 }//getTopStack2  √
 /*****************2.7、数据入栈*******************/
-Status pushStack2(sqStack2 *S, int e){
+Status pushStack2(sqStack2 *S, elemType e){
     if(S->top + 1 >= S->stackSize){
         S->bottom = (elemType*)realloc(S->bottom, (S->stackSize+STACKINCREMENT)* sizeof(elemType));
         if(S->bottom == NULL) return ERROR;
@@ -176,7 +176,7 @@ void conversion(){
     printf("--请输入一个十进制数：");
     scanf_s("%d", &e1);
     e2 = e1;
-    printf("--请输入要转换成什么进制：");
+    printf("--请输入要转换成什么进制（暂时不支持十六进制）：");
     scanf_s("%d", &system);
     while(e1){
         pushStack1(&S, e1%system);
@@ -187,7 +187,53 @@ void conversion(){
         popStack1(&S, &e1); printf("%d", e1);
     }
     printf("\n");
-}//conversion
+}//conversion TODO 十六进制的表示还没做出来
+/*****************3.2、有优先级的括号匹配检验*******************/
+//1）判断左括号
+Status isLeft(char left){
+    switch(left){
+        case '(': return 1; break;
+        case '[': return 2; break;
+        case '{': return 3; break;
+        default: return FALSE;
+    }
+}//isLeft
+//2）判断右括号
+Status isRight(char right){
+    if(right==')' || right==']' || right=='}') return TRUE;
+    else return FALSE;
+}//isRight
+//3）判断左右括号是否匹配
+Status match(char left, char right){
+    if(left=='(' && right==')') return TRUE;
+    else if(left=='[' && right==']') return TRUE;
+    else if(left=='{' && right=='}') return TRUE;
+    else return FALSE;
+}//match
+//4）括号匹配函数
+Status matching(char *str){         //str是某个字符串的首地址
+    char *p = str;          //p是一个指向字符型数据的指针
+    sqStack1 S; initStack1(&S);
+    char ch, left;
+    char e;             //用于取得栈顶参数，来确定括号的优先级是否正确
+    while((ch=*p) != '\0'){
+        if(isLeft(ch)){
+            getTopStack1(S, &e);            //获得栈顶数据
+            if(isLeft(ch)==2 && e=='(') return 0;               //表示括号优先级有误
+            if(isLeft(ch)==3 && (e=='[' || e=='(')) return 0;   //表示括号优先级有误
+            pushStack1(&S, ch);
+        }
+        if(isRight(ch)){
+            if(!popStack1(&S, &left)) return -1;         //表示字符串从开头就缺少左括号
+            if(!match(left, ch)) return -2;              //表示当前最急迫的左括号和本右括号不匹配
+        }
+        p++;
+    }
+    if(!isEmptyStack1(S)) return -3;            //表示栈中有多余的左括号没有得到匹配
+    return TRUE;
+}//matching     √
+/*****************3.3、有优先级的括号匹配检验*******************/
+
 
 /**********************************************主函数*********************************************************/
 int main() {
@@ -283,8 +329,14 @@ int main() {
     printf("\n--当前栈长度：%d\n\n", lengthStack2(S2));
     getTopStack2(S2, &e);
     printf("--当前栈顶数据：%d\n\n", e);
-    */
-    conversion();
 
+    printf("//3.1、conversion测试\n");
+    conversion();*/
+
+    printf("//3.2、matching测试\n");
+    char str[] = "([{";
+    printf("%d\n", matching(str));
     return 0;
+
+
 }
