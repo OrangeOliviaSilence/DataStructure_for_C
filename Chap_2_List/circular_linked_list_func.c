@@ -134,5 +134,4 @@ int main() {
     printf("//5、empty测试\n");
     empty_cllist(L);
     printf("\n");
-
 }

@@ -60,5 +60,4 @@ Status delete_ddlist(DulinkList *L, int i){
 //除了插入、删除函数，其他函数和单向链表相似
 
 int main(){
-
 }

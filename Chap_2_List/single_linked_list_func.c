@@ -189,6 +189,7 @@ void traverse_llist(linkList L){
 }//traverse_llist  √
 //不带头节点的没做QVQ
 
+
 int main() {
     linkList L;
     int i, e;
