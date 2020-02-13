@@ -12,7 +12,7 @@
 #define STACK_INIT_SIZE 100         //存储空间初始分配量
 #define STACKINCREMENT 10           //存储空间增量
 typedef int Status;
-typedef char elemType;
+typedef int elemType;
 
 //顺序栈的第1种定义方式
 typedef struct {
@@ -54,8 +54,7 @@ Status destroyStack1(sqStack1 *S){
 }//destroyStack1
 /*****************1.3、清空栈*******************/
 Status clearStack1(sqStack1 *S){
-    free(S->bottom);
-    initStack1(S);//TODO 清空表就是重新初始化？
+    S->top = S->bottom;
     return OK;
 }//clearStack1  √
 /*****************1.4、查栈空*******************/
@@ -114,15 +113,14 @@ Status initStack2(sqStack2 *S){
 /*****************2.2、销毁栈*******************/
 Status destroyStack2(sqStack2 *S){
     free(S->bottom); S->bottom = NULL;
-    //下面应该是S->top = -1还是 free(&(S->top))？
-    S->top = -1; //TODO destroyStack2
+    //下面应该是S->top = -1还是 free(&(S->top))？ 用S->top = -1; 因为free要和malloc结合使用
+    S->top = -1;
     S->stackSize = 0;
     return OK;
 }//destroyStack2
 /*****************2.3、清空栈*******************/
 Status clearStack2(sqStack2 *S){
-    free(S->bottom);
-    initStack2(S);//TODO 清空表就是重新初始化？
+    S->top = -1;
     return OK;
 }//clearStack2  √
 /*****************2.4、查栈空*******************/
@@ -327,6 +325,7 @@ int main() {
     getTopStack2(S2, &e);
     printf("--当前栈顶数据：%d\n\n", e);
 
+    //3栈的应用
     printf("//3.1、conversion测试\n");
     conversion();
 
