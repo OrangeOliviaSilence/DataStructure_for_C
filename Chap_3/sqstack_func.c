@@ -254,7 +254,7 @@ Status matching(char *str){         //str是某个字符串的首地址
 
 /**********************************************主函数*********************************************************/
 int main() {
-    /*//第1种
+    //第1种
     printf("//顺序栈的第1种定义方式的测试\n");
     sqStack1 S1;
     int e;
@@ -344,14 +344,14 @@ int main() {
     }
     printf("\n--当前栈长度：%d\n\n", lengthStack2(S2));
     getTopStack2(S2, &e);
-    printf("--当前栈顶数据：%d\n\n", e);*/
+    printf("--当前栈顶数据：%d\n\n", e);
 
     //3栈的应用
     printf("//3.1、conversion测试\n");
     conversion();
 
-    /*printf("//3.2、matching测试\n");
+    printf("//3.2、matching测试\n");
     char str[] = "([{";
     printf("%d\n", matching(str));
-    return 0;*/
+    return 0;
 }
