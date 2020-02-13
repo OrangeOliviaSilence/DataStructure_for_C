@@ -69,9 +69,10 @@ Status getHeadLinkedQueue(linkedQueue Q, elemType* e){
     *e = Q.head->next->data;
     return OK;
 }//getHeadLinkedQueue
-/*****************1.7、数据入队列*******************/
+/*****************1.7、数据入队列********S***********/
 Status enterLinkedQueue(linkedQueue *Q, elemType e){
     queuePtr s = (QNode*)malloc(sizeof(QNode));
+    if(s == NULL) exit(OVERFLOW);
     s->data = e;
     s->next = Q->tail->next;
     Q->tail->next = s;
@@ -79,7 +80,10 @@ Status enterLinkedQueue(linkedQueue *Q, elemType e){
     return OK;
 }//enterLinkedQueue
 /*****************1.8、数据出队列*******************/
+Status deleteLinkedQueue(linkedQueue *Q, elemType *e){
+    if(isEmptyLinkedQueue(*Q)) return ERROR;
 
+}//deleteLinkedQueue
 /*****************1.9、遍历队列*******************/
 
 int main(){
