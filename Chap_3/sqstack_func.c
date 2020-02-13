@@ -167,7 +167,7 @@ void traverseStack2(sqStack2 S){
 
 //栈的应用
 /*****************3.1、进制换算*******************/
-void conversion(){
+void conversion(){              //十进制数转化为任何进制的数
     sqStack1 S;
     int e1, e2, system;
     initStack1(&S);
@@ -180,12 +180,33 @@ void conversion(){
         pushStack1(&S, e1%system);
         e1 /= system;
     }
-    printf("--十进制数%d对应的%d进制数为：", e2, system);
+    printf("--10进制数%d对应的%d进制数为：", e2, system);
     while(!isEmptyStack1(S)){
-        popStack1(&S, &e1); printf("%d", e1);
+        popStack1(&S, &e1);
+        if(system != 16) printf("%d", e1);  //若是转换成16进制，要转到else进行特殊处理
+        else{
+            switch (e1){
+                case 0: printf("%d", 0); break;
+                case 1: printf("%d", 1); break;
+                case 2: printf("%d", 2); break;
+                case 3: printf("%d", 3); break;
+                case 4: printf("%d", 4); break;
+                case 5: printf("%d", 5); break;
+                case 6: printf("%d", 6); break;
+                case 7: printf("%d", 7); break;
+                case 8: printf("%d", 8); break;
+                case 9: printf("%d", 9); break;
+                case 10: printf("%c", 'A'); break;
+                case 11: printf("%c", 'B'); break;
+                case 12: printf("%c", 'C'); break;
+                case 13: printf("%c", 'D'); break;
+                case 14: printf("%c", 'E'); break;
+                case 15: printf("%c", 'F'); break;
+            }
+        }
     }
     printf("\n");
-}//conversion TODO 十六进制的表示还没做出来
+}//conversion
 /*****************3.2、有优先级的括号匹配检验*******************/
 //1）判断左括号
 Status isLeft(char left){
@@ -233,7 +254,7 @@ Status matching(char *str){         //str是某个字符串的首地址
 
 /**********************************************主函数*********************************************************/
 int main() {
-    //第1种
+    /*//第1种
     printf("//顺序栈的第1种定义方式的测试\n");
     sqStack1 S1;
     int e;
@@ -323,14 +344,14 @@ int main() {
     }
     printf("\n--当前栈长度：%d\n\n", lengthStack2(S2));
     getTopStack2(S2, &e);
-    printf("--当前栈顶数据：%d\n\n", e);
+    printf("--当前栈顶数据：%d\n\n", e);*/
 
     //3栈的应用
     printf("//3.1、conversion测试\n");
     conversion();
 
-    printf("//3.2、matching测试\n");
+    /*printf("//3.2、matching测试\n");
     char str[] = "([{";
     printf("%d\n", matching(str));
-    return 0;
+    return 0;*/
 }
