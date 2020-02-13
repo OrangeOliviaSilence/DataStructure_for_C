@@ -3,4 +3,4 @@ project(DataStruct_ForStudy C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(untitled3 Chap_3/sqstack_func.c)
+add_executable(untitled3 Chap_3/linked_queue_func.c)
