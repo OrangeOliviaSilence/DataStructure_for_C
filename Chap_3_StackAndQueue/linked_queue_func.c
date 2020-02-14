@@ -52,7 +52,7 @@ Status destroyLinkedQueue(linkedQueue *Q){
         q = p->next;
         free(p);
         p = q;
-    }        //销毁和清空的区别在于，前者将头结点也free掉
+    }//while        //销毁和清空的区别在于，前者将头结点也free掉
     Q->head = Q->tail = NULL;
     return OK;
 }//destroyLinkedQueue      √
@@ -63,7 +63,7 @@ Status clearLinkedQueue(linkedQueue *Q){
         q = p->next;
         free(p);
         p = q;
-    }
+    }//while
     Q->head->next = NULL;
     Q->tail = Q->head;
     return OK;
