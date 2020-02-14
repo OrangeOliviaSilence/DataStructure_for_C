@@ -24,3 +24,12 @@ typedef struct BiTNode2{        //比二叉链表的结点多了一个父亲指针
     struct BiTNode *lchild, *rchild, *parent;
 }BiTNode2, *BiTree2;
 
+/***
+ * 打印出数据
+ * @param e
+ * @return Status
+ */
+Status visit(elemType e){
+    printf("%d ", e);
+    return OK;
+}//visit
