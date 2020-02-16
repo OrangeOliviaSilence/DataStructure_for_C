@@ -98,9 +98,7 @@ Status deleteLinkedQueue(linkedQueue *Q, elemType *e){
     free(p);
     return OK;
 }//deleteLinkedQueue      √
-/*TODO 使用malloc分配一段内存后，使用free函数释放内存时，
-        若free的参数是这段内存的首地址，则销毁这一整段内存？
-        若free的参数是这段内存中的某一块内存的地址，则是只销毁这个地址所对应的这一块地址吗？*/
+/* 使用malloc分配一段内存后，使用free函数释放内存时，free的参数是malloc分配的内存段的首地址，并且会将内存段整个释放*/
 /*****************1.9、遍历队列*******************/
 Status traverseLinkedQueue(linkedQueue Q){
     if(isEmptyLinkedQueue(Q)) return ERROR;
