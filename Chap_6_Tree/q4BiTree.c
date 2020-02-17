@@ -57,18 +57,18 @@ Status1 clearLinkedQueue(linkedQueue *Q){
 }//clearLinkedQueue      √
 /*****************1.5、查队列空*******************/
 Status1 isEmptyLinkedQueue(linkedQueue Q){
-    if(Q.head == Q.tail) {printf("QVQ "); return TRUE;}     //若队列的头指针、尾指针指向同一个结点，则队列空
-    else {printf("YES "); return FALSE;}
+    if(Q.head == Q.tail) {/*printf("isEmpty ");*/ return TRUE;}     //若队列的头指针、尾指针指向同一个结点，则队列空
+    else {/*printf("notEmpty ");*/ return FALSE;}
 }//isEmptyLinkedQueue      √
 /*****************1.6、数据入队列********S***********/
 Status1 enterLinkedQueue(linkedQueue *Q, elemType1 e){
     queuePtr s = (QNode*)malloc(sizeof(QNode));
-    if(s == NULL) {printf("TAT"); exit(OVERFLOW);}
+    if(s == NULL) {/*printf("TAT");*/ exit(OVERFLOW);}
     s->data = e;
     s->next = Q->tail->next;
     Q->tail->next = s;
     Q->tail = s;
-    printf("OHO ");
+    //printf("\nQ->head->next：%p\n", Q->head->next);
     return OK;
 }//enterLinkedQueue      √
 /*****************1.7、数据出队列*******************/
@@ -77,7 +77,10 @@ Status1 deleteLinkedQueue(linkedQueue *Q, elemType1 *e){
     *e = Q->head->next->data;
     queuePtr p = Q->head->next;
     Q->head->next = p->next;
-    free(p);
+    free(p); p->next = NULL;
+    //在Chap3中，原本写链队列的时候犯了错误，没有考虑到delete后变为空队列的情况
+    //新加一行：若删除掉节点后，变为空队列则：
+    if(Q->head->next == NULL) Q->tail = Q->head;
     return OK;
 }//deleteLinkedQueue      √
 /* 使用malloc分配一段内存后，使用free函数释放内存时，free的参数是malloc分配的内存段的首地址，并且会将内存段整个释放*/

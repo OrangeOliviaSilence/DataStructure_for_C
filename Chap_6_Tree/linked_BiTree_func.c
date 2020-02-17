@@ -167,16 +167,15 @@ void levelOrderTraverseBT(BiTree1 T) {
     //按层次遍历二叉树算法
     if(!T) return;           //空树
     linkedQueue Q;
-    BiTree1 p;
     initLinkedQueue(&Q);             //初始化空队列Q
+    //printf("\nQ.head==Q.tail ? %d", Q.head==Q.tail);
     enterLinkedQueue(&Q, T);        //根入队
     while( !isEmptyLinkedQueue(Q) ) {
-        printf("%p ", Q.head->next->data);
-        deleteLinkedQueue(&Q, &p);    //第一次循环使队头p出队
-        printf("%p ", p);
-        visit(p->data);     //访问p
-        if(p->lchild) enterLinkedQueue(&Q, p->lchild); //p的左孩子入队
-        if(p->rchild) enterLinkedQueue(&Q, p->rchild);  //p的右孩子入队
+        deleteLinkedQueue(&Q, &T);    //第一次循环使队头p出队
+        //printf("\nQ.head==Q.tail ? %d\n", Q.head==Q.tail);
+        visit(T->data);     //访问p
+        if(T->lchild) enterLinkedQueue(&Q, T->lchild); //p的左孩子入队
+        if(T->rchild) enterLinkedQueue(&Q, T->rchild);  //p的右孩子入队
         //printf("%p %p ", Q.head->next->data, Q.head->next->next->data);
     }//while
 }//levelOrderTraverseBT //ABC\\DE\G\\F\\\  //HDA\\C\B\\GF\E\\\
