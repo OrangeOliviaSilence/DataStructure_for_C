@@ -150,6 +150,11 @@ int main(){
     printf("--被删除的数据为：%d\n", e);
     getHeadLinkedQueue(Q, &e);
     printf("--当前队头数据为：%d\n", e);
+    printf("--当前队列的长为：%d\n", lengthLinkedQueue(Q));
+    deleteLinkedQueue(&Q, &e);
+    printf("--被删除的数据为：%d\n", e);
+    getHeadLinkedQueue(Q, &e);
+    printf("--当前队头数据为：%d\n", e);
     printf("--当前队列的长为：%d\n\n", lengthLinkedQueue(Q));
 
     printf("//8、clear/destroy测试\n");
