@@ -3,13 +3,14 @@
 #include "stdio.h"
 #include "malloc.h"
 #include "stdlib.h"
+#include "math.h"       //为了进行对数运算
 #include "q4BiTree.h"
 #define TRUE 1
 #define FALSE 0
 #define OK 1
 #define ERROR 0
 #define INFEASIBLE -1
-#define OVERFLOW -2
+//#define OVERFLOW -2
 
 #define endMark '\\'
 typedef int Status;
@@ -45,7 +46,7 @@ Status visit(elemType e){
  */
 Status initBiTree(BiTree1 *T){
     *T = (BiTNode1*)malloc(sizeof(BiTNode1));
-    if(*T == NULL) exit(ERROR);
+    if(*T == NULL) exit(OVERFLOW);
     (*T)->lchild = (*T)->rchild = NULL;     //TODO 有可能有问题
     return OK;
 }//initBiTree   √
@@ -123,22 +124,66 @@ int depthBiTree(BiTree1 T){
 
 //TODO rootBiTree
 
+//TODO 1.8~1.16的难点都在于“在二叉树中如何定位一个节点？”
 /*****************1.8、读二叉树中某个节点的值*******************/
-
+void nodeDataBiTree(BiTree1 T, BiTNode1 *node, elemType *data){     //data的值在使用前应该先赋值‘0’
+    if(!T || *data!='0') return;
+    if(T == node) *data = T->data;
+    nodeDataBiTree(T->lchild, node, data);
+    nodeDataBiTree(T->rchild, node, data);
+}//nodeDataBiTree
 /*****************1.9、对二叉树中某个节点赋值*******************/
-
+void assignDataBiTree(BiTree1 T, BiTNode1 *node, elemType data, _Bool *flag){
+    //flag用于标识是否完成赋值，flag==1则是赋值完成，反之还未完成
+    if(!T || *flag==1) return;
+    if(T == node) {
+        T->data = data;
+        *flag = 1;
+    }//if
+    assignDataBiTree(T->lchild, node, data, flag);
+    assignDataBiTree(T->rchild, node, data, flag);
+}//assignDataBiTree
 /*****************1.10、查某个结点的父节点*******************/
-
+void parentBiTree(BiTree1 T, BiTNode1 *node, BiTNode1 **ptr){ //ptr在使用前应该赋值NULL
+    if(!T || *ptr!=NULL) return;
+    if(T->lchild == node) *ptr = T;
+    if(T->rchild == node) *ptr = T;
+    parentBiTree(T->lchild, node, ptr);
+    parentBiTree(T->rchild, node, ptr);
+}//parentBiTree
 /*****************1.11、查某个节点的左孩子*******************/
-
+void leftChildBiTree(BiTree1 T, BiTNode1 *node, BiTNode1 **ptr){
+    if(!T || *ptr!=NULL) return;
+    if(T == node) *ptr = node->lchild;
+    leftChildBiTree(T->lchild, node, ptr);
+    leftChildBiTree(T->rchild, node, ptr);
+}//leftChildBiTree
 /*****************1.12、查某个节点的右孩子*******************/
-
+void rightChildBiTree(BiTree1 T, BiTNode1 *node, BiTNode1 **ptr){
+    if(!T || *ptr!=NULL) return;
+    if(T == node) *ptr = node->rchild;
+    rightChildBiTree(T->lchild, node, ptr);
+    rightChildBiTree(T->rchild, node, ptr);
+}//rightChildBiTree
 /*****************1.13、查某个节点的左兄弟*******************/
 
 /*****************1.14、查某个节点的右兄弟*******************/
 
-/*****************1.15、*******************/
-
+/*****************1.15、后序计算表达式二叉树的结果*******************/
+int experssionBiTree(BiTree1 T){
+    //当前节点的左右子节点如果不是都空，则当前节点存放的是运算符，
+    //那么求取当前节点的左右子节点的运算结果，和当前节点的运算符进行运算得到结果，递归返回。
+    //如果当前节点的左右子节点都空，则当前节点存放的必是数值，则将数值返回给父节点（父节点必是运算符），由父节点的运算符对数字进行运算
+    if(!T->lchild && !T->rchild) return T->data;
+    int i = experssionBiTree(T->lchild);
+    int j = experssionBiTree(T->rchild);
+    switch (T->data){
+        case '+': return i+j; break;
+        case '-': return i-j; break;
+        case '*': return i*j; break;
+        case '/': return i/j; break;
+    }//switch
+}//experssionBiTree
 /*****************1.16、删除节点的左/右子树*******************/
 
 /*****************1.17、先序遍历树*******************/
@@ -203,12 +248,61 @@ Status exchangeChildTreeBT(BiTree1 *T){
     (*T)->rchild = p;
     return OK;
 }//exchangeChildTreeBT   √
-/*****************1.24、求某个节点的所在层次*******************/
-//需要层次遍历得到节点按层次遍历的序号，然后由序号，用公式计算得到所在层次
-int levelBiTree(BiTree1 T){
-
-}
-/*****************1.25、复制二叉树*******************/
+/*****************1.24、拷贝二叉树（用后序的方法）*******************/
+void copyBiTree(BiTree1 *T2, BiTree1 T1){
+    if(T1==NULL) *T2 = NULL;
+    else {
+        BiTNode1 *Lnode, *Rnode;
+        copyBiTree(&Lnode, T1->lchild);
+        copyBiTree(&Rnode, T1->rchild);
+        initBiTree(T2);
+        (*T2)->data = T1->data;
+        (*T2)->lchild = Lnode;
+        (*T2)->rchild = Rnode;
+    }//else
+}//copyBiTree   √
+/*****************1.25、打印节点的所在层次*******************/
+void levelBiTree(BiTree1 T, int *level){   //level的初值应该为0
+    if(T == NULL) return;
+    (*level)++;
+    int level2 = *level;
+    printf("%c\t%d\n", T->data, *level);
+    levelBiTree(T->lchild, level);
+    levelBiTree(T->rchild, &level2);
+}//levelBiTree
+/*****************1.25、创建表达式二叉树*******************/
+Status createExperssionBT(BiTree1 *T){
+    elemType data;
+    scanf("%c", &data);
+    while(data != endMark){     //如果当前输入的不是endMark，则给当前节点分配一个空间
+        (*T) = (BiTNode1*)malloc(sizeof(BiTNode1));
+        if(!(*T)) exit(OVERFLOW);
+        if(!isOperate(data)){   //如果不是运算符，则该节点的左右子节点要指向NULL
+            (*T)->data = data;
+            (*T)->lchild = (*T)->rchild = NULL;
+        }//if
+        else{       //如果是运算符，对该运算符的左右子节点继续进行操作
+            (*T)->data = data;
+            createExperssionBT(&((*T)->lchild));
+            createExperssionBT(&((*T)->rchild));
+        }//else
+        return OK;
+    }
+}//createExperssionBT
+/*****************1.26、打印二叉树中树根到所有树叶的路径*******************/
+void printRouteBT(BiTree1 T, Stcak *S){
+    if(!T) return;
+    elemType e;
+    pushStcak(S, T->data);
+    if(!T->lchild && !T->rchild){   //如果当前节点是树叶，则从栈底遍历一遍栈，并且让栈顶元素出栈
+        traverseStack(*S);
+        popStack(&S, &e);
+    }//if
+    else {
+        printRouteBT(T->lchild, S);
+        printRouteBT(T->rchild, S);
+    }//else
+}//printRouteBT
 
 int main(){
     BiTree1 T;
@@ -237,6 +331,11 @@ int main(){
 
     }
     else printf("该树空！\n\n");
+
+    printf("打印该树各个节点的层次数：\n");
+    int level = 0;
+    levelBiTree(T, &level);
+    printf("\n");
 
     printf("--2、交换左右子树\n");
     exchangeChildTreeBT(&T);

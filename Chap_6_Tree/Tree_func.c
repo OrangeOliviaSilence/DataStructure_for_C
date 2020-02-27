@@ -35,3 +35,39 @@ typedef struct CSNode{
     elemType data;
     struct CSNode *firstChild, *nextSibling;
 } CSNode, *CSTree;
+
+//以下使用孩子表示法
+//先序遍历树
+void preOrederTree(CTBox tree[], int root){
+    if(root == 0) return;
+    printf("%c ", tree[root].data);
+    ChildPtr p = tree[root].firstChild;
+    while(p){
+        preOrederTree(tree, p->childNum);
+        p = p->next;
+    }//while
+}//preOrderTree
+
+//后序遍历树
+void postOrderTree(CTBox tree[], int root){
+    if(root == 0) return;
+    ChildPtr p = tree[root].firstChild;
+    while(p){
+        postOrderTree(tree, p->childNum);
+        p = p->next;
+    }//while
+    printf("%c ", tree[root].data);
+}//postOrderTree
+
+//孩子兄弟表示法
+int depthCSTree(CSTree T){      //思路：求出每个孩子的深度，取出最深的深度，然后将最深的深度+1（+1是指还要加上根节点）作为函数的返回值
+    if(!T) return 0;
+    int depthMax = 0;
+    CSTree p = T->firstChild;
+    while(p){
+        int depth = depthCSTree(p);
+        depthMax = depth > depthMax ? depth : depthMax;
+        p = p->nextSibling;
+    }
+    return (depth+1);
+}
